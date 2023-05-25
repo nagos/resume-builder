@@ -1,14 +1,17 @@
-from flask import Flask, request, session
+from flask import Flask, request
+import flask
 import os
 from mysql.connector import connect
 
 from backend import Backend, BackendError
+from sessionManager import sessionManager
 
 app = Flask(__name__)
 app.secret_key = os.getenv('API_KEY', 'dev key')
 db_server = os.getenv('DB_SERVER')
 
 backend = Backend(db_server, "resume")
+session = sessionManager(flask.session)
 
 @app.route('/api/login/register', methods=['POST'])
 def register():
@@ -22,8 +25,7 @@ def register():
         app.logger.error(err)
         return "fail", 400
 
-    session['login'] = True
-    session['id'] = rowid
+    session.login(rowid)
 
     return "ok"
 
@@ -43,15 +45,14 @@ def login():
         return "fail", 400
 
     if password == user_password:
-        session['login'] = True
-        session['id'] = user_id
+        session.login(user_id)
         return "ok"
     else:
         return "fail", 400
 
 @app.route('/api/login/logout', methods=['POST'])
 def logout():
-    session.clear()
+    session.logout()
     return "ok"
 
 @app.route('/api/resume/<int:id>')
@@ -70,10 +71,10 @@ def resume_get(id):
 
 @app.route('/api/resume/')
 def resume_list():
-    if not session.get('login'):
+    if not s.is_login():
         return "fail", 400
     ret = []
-    user_id = session.get('id')
+    user_id = session.user_id()
     resume_get_query = "SELECT id FROM resume WHERE user_id=%s"
     try:
         row, rowid, rowcount = backend.db_query(resume_get_query, (user_id,))
@@ -86,10 +87,10 @@ def resume_list():
 
 @app.route('/api/resume/create', methods=['POST'])
 def resume_create():
-    if not session.get('login'):
+    if not s.is_login():
         return "fail", 400
     text = request.form.get('text')
-    user_id = session.get('id')
+    user_id = session.user_id()
     resume_get_query = "INSERT INTO resume (user_id, text) VALUES (%s, %s)"
     try:
         row, rowid, rowcount = backend.db_query(resume_get_query, (user_id, text))
@@ -100,10 +101,10 @@ def resume_create():
 
 @app.route('/api/resume/<int:id>/update', methods=['POST'])
 def resume_update(id):
-    if not session.get('login'):
+    if not s.is_login():
         return "fail", 400
     text = request.form.get('text')
-    user_id = session.get('id')
+    user_id = session.user_id()
     resume_update_query = "UPDATE resume SET text=%s WHERE id=%s and user_id=%s"
     try:
         row, rowid, rowcount = backend.db_query(resume_update_query, (text, id, user_id))
@@ -116,9 +117,9 @@ def resume_update(id):
 
 @app.route('/api/resume/<int:id>/delete', methods=['POST'])
 def resume_delete(id):
-    if not session.get('login'):
+    if not s.is_login():
         return "fail", 400
-    user_id = session.get('id')
+    user_id = session.user_id()
     resume_delete_query = "DELETE FROM resume WHERE id=%s and user_id=%s"
     try:
         row, rowid, rowcount = backend.db_query(resume_delete_query, (id, user_id))
