@@ -2,6 +2,7 @@ from flask import Flask, request
 import flask
 import os
 from mysql.connector import connect
+import markdown
 
 from backend import Backend, BackendError
 from sessionManager import sessionManager
@@ -49,8 +50,8 @@ def logout():
     session.logout()
     return "ok"
 
-@app.route('/api/resume/<int:id>')
-def resume_get(id):
+@app.route('/api/resume/<int:id>/<string:fmt>')
+def resume_get(id, fmt):
     try:
         text = backend.resume_get(id)
     except BackendError as err:
@@ -59,6 +60,8 @@ def resume_get(id):
 
     if text is None:
         return "fail", 400
+    if fmt == 'html':
+        return markdown.markdown(text)
     else:
         return text
 
