@@ -14,7 +14,7 @@ db_server = os.getenv('DB_SERVER')
 backend = Backend(db_server, "resume")
 session = sessionManager(flask.session)
 
-@app.route('/api/login/register', methods=['POST'])
+@app.route('/api/user/register', methods=['POST'])
 def register():
     user = request.form.get('user')
     password = request.form.get('password')
@@ -29,7 +29,7 @@ def register():
 
     return "ok"
 
-@app.route('/api/login/login', methods=['POST'])
+@app.route('/api/user/login', methods=['POST'])
 def login():
     user = request.form.get('user')
     password = request.form.get('password')
@@ -45,7 +45,7 @@ def login():
     else:
         return "fail", 400
 
-@app.route('/api/login/logout', methods=['POST'])
+@app.route('/api/user/logout', methods=['POST'])
 def logout():
     session.logout()
     return "ok"
