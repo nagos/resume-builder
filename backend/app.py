@@ -17,7 +17,7 @@ backend = Backend(db_server, "resume")
 session = sessionManager(flask.session)
 
 @app.route('/api/user/register', methods=['POST'])
-def register():
+def user_register():
     user = request.form.get('user')
     password = request.form.get('password')
         
@@ -39,7 +39,7 @@ def user_status():
         return {'login': False}
 
 @app.route('/api/user/login', methods=['POST'])
-def login():
+def user_login():
     user = request.form.get('user')
     password = request.form.get('password')
     try:
@@ -55,7 +55,7 @@ def login():
         return "fail", 400
 
 @app.route('/api/user/logout', methods=['POST'])
-def logout():
+def user_logout():
     session.logout()
     return "ok"
 
