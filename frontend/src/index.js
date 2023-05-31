@@ -14,7 +14,7 @@ import {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <IndexPage/>,
+    element: <LoginPage/>,
   },
   {
     path: "/register",
