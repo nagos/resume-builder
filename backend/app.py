@@ -3,13 +3,11 @@ import flask
 import os
 from mysql.connector import connect
 import markdown
-from flask_cors import CORS
 
 from backend import Backend, BackendError
 from sessionManager import sessionManager
 
 app = Flask(__name__)
-CORS(app)
 app.secret_key = os.getenv('API_KEY', 'dev key')
 db_server = os.getenv('DB_SERVER')
 
