@@ -20,7 +20,8 @@ session = sessionManager(flask.session)
 def user_register():
     user = request.form.get('user')
     password = request.form.get('password')
-        
+    if user is None or password is None:
+        return "fail", 400
     try:
         user_id = backend.user_register(user, password)
     except BackendError as err:
@@ -42,6 +43,8 @@ def user_status():
 def user_login():
     user = request.form.get('user')
     password = request.form.get('password')
+    if user is None or password is None:
+        return "fail", 400
     try:
         user_id = backend.user_login(user, password)
     except BackendError as err:
