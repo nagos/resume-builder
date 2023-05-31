@@ -31,6 +31,13 @@ def register():
 
     return "ok"
 
+@app.route('/api/user/status')
+def user_status():
+    if session.is_login():
+        return {'login': True}
+    else:
+        return {'login': False}
+
 @app.route('/api/user/login', methods=['POST'])
 def login():
     user = request.form.get('user')
