@@ -2,3 +2,4 @@ flask
 mysql-connector-python
 markdown
 flask-cors
+passlib

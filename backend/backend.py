@@ -1,4 +1,5 @@
 from mysql.connector import connect, Error
+from passlib.hash import sha256_crypt
 
 class BackendError(Exception):
     pass
@@ -17,6 +18,12 @@ class Backend():
             )
         cursor = cnx.cursor()
         return cnx, cursor
+    
+    def hash_password(self, password):
+        return sha256_crypt.hash(password)
+
+    def check_password(self, password, hash):
+        return sha256_crypt.verify(password, hash)
 
     def db_query(self, query, data = None):
         try:
@@ -38,19 +45,20 @@ class Backend():
         return row, rowid, rowcount
 
     def user_register(self, user, password):
+        password_hash = self.hash_password(password)
         create_user_query = "INSERT INTO users (login, password) VALUES (%s, %s)"
-        row, rowid, rowcount = self.db_query(create_user_query, (user, password))
+        row, rowid, rowcount = self.db_query(create_user_query, (user, password_hash))
         return rowid
     
     def user_login(self, user, password):
         user_password_query = "SELECT id, password FROM users WHERE login=%s"
         row, rowid, rowcount = self.db_query(user_password_query, (user,))
         if row:
-            user_id, user_password = row[0]
+            user_id, password_hash = row[0]
         else:
-            user_id, user_password = None, None
+            user_id, password_hash = None, None
         
-        if password == user_password:
+        if self.check_password(password, password_hash):
             return user_id
         else:
             return None
