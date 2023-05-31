@@ -29,7 +29,7 @@ const router = createBrowserRouter([
     element: <ResumeListPage/>,
   },
   {
-    path: "/edit",
+    path: "/edit/:id",
     element: <ResumeEditPage/>,
   },
 ]);

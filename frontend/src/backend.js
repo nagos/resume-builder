@@ -26,4 +26,12 @@ export default class Backend {
     async resumeList() {
         return this.request('/api/resume/');
     }
+
+    async resumeGet(id) {
+        return this.request(`/api/resume/${id}/text`);
+    }
+
+    async resumeUpdate(id, text) {
+        return this.request(`/api/resume/${id}/update`, 'POST', {text});
+    }
 }
