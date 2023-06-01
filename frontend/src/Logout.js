@@ -1,6 +1,7 @@
 import { React } from "react";
 import { useNavigate } from "react-router-dom";
 import Backend from './backend';
+import Button from '@mui/material/Button';
 
 const Logout = () => {
     const backend = new Backend();
@@ -12,7 +13,7 @@ const Logout = () => {
         });
     }
     return (
-        <button onClick={logoutClick}>Logout</button>
+        <Button color="inherit" onClick={logoutClick}>Logout</Button>
     );
 };
 

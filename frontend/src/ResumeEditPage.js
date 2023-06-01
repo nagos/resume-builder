@@ -2,6 +2,11 @@ import { React, useState, useEffect } from "react";
 import Backend from './backend';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Layout from "./Layout";
 
 const ResumeEditPage = () => {
     const backend = new Backend();
@@ -46,14 +51,50 @@ const ResumeEditPage = () => {
     
 
     return (
-        <form onSubmit={resumeUpdate}>
-            <input type="text" value={title} name="title" onChange={titleChange}></input>
-            <br/>
-            <textarea name='text' value={text} onChange={textChange}/>
-            <br/>
-            <button type="submit">Update</button>
-            <button onClick={resumeDelete}>Delete</button>
-        </form>
+        <Layout logout='true'>
+            <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                Edit
+            </Typography>
+            <Box component="form" onSubmit={resumeUpdate} noValidate sx={{ mt: 1 }}>
+                <TextField
+                    margin="normal"
+                    fullWidth
+                    name="title"
+                    label="Title"
+                    type="text"
+                    id="title"
+                    value={title}
+                    onChange={titleChange}
+                />
+                <TextField
+                    margin="normal"
+                    fullWidth
+                    name="text"
+                    type="text"
+                    id="text"
+                    multiline
+                    value={text}
+                    onChange={textChange}
+                    minRows={10}
+                />
+                <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2, mr: 2}}
+                >
+                    Update
+                </Button>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={resumeDelete}
+                    color="error"
+                >
+                    Delete
+                </Button>
+            </Box>
+        </Layout>
     );
 };
 
