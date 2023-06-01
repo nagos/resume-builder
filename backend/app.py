@@ -85,10 +85,7 @@ def resume_list():
     except BackendError as err:
         app.logger.error(f'Backend error: {err}')
         return {'status': 'error'}, 400
-    if len(ids):
-        return ids
-    else:
-        return {'status': 'error'}, 400
+    return ids
 
 @app.route('/api/resume/create', methods=['POST'])
 def resume_create():
