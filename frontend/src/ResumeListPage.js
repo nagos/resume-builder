@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import Backend from './backend';
 import ResumeListItem from "./ResumeListItem";
+import Logout from "./Logout";
 
 const ResumeListPage = () => {
     const backend = new Backend();
@@ -16,6 +17,7 @@ const ResumeListPage = () => {
             <ul>
                 {list.map((r)=>(<li key={r}><ResumeListItem id={r}/></li>))}
             </ul>
+            <Logout/>
         </div>
     );
 };

@@ -27,6 +27,10 @@ export default class Backend {
         return this.request('/api/user/register', 'POST',  { user, password }).then((data) => data.login===true);
     }
 
+    async userLogout() {
+        return this.request('/api/user/logout', 'POST', {});
+    }
+
     async resumeList() {
         return this.request('/api/resume/');
     }
