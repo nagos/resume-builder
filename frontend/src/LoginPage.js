@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Backend from './backend';
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
     const backend = new Backend();
@@ -13,11 +14,12 @@ const LoginPage = () => {
 
         const formJson = Object.fromEntries(formData.entries());
 
-        const login = backend.userLogin(formJson.user, formJson.password);
-        if (login) {
-            // Переход с задержкой, что бы применились cookies
-            setTimeout(()=>navigate("/list"), 1000);
-        }
+        const login = backend.userLogin(formJson.user, formJson.password).then((login) => {
+            if (login) {
+                // Переход с задержкой, что бы применились cookies
+                setTimeout(()=>navigate("/list"), 1000);
+            }
+        });
     }
 
     const navigate = useNavigate();
@@ -36,6 +38,9 @@ const LoginPage = () => {
                 <input  name="password" type="password"></input>
                 <button type="submit" >Login</button>
             </form>
+            <p>
+                <Link to='/register'>Register</Link>
+            </p>
         </div>
     );
 };
