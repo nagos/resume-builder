@@ -14,10 +14,9 @@ const ResumeEditPage = () => {
 
         const form = e.target;
         const formData = new FormData(form);
-
         const formJson = Object.fromEntries(formData.entries());
 
-        const login = backend.resumeUpdate(id, formJson.text);
+        backend.resumeUpdate(id, formJson.text);
     }
 
     function resumeDelete(e) {
@@ -42,7 +41,7 @@ const ResumeEditPage = () => {
         <form onSubmit={resumeUpdate}>
             <textarea name='text' value={text} onChange={textChange}/>
             <br/>
-            <button type="submit" >Update</button>
+            <button type="submit">Update</button>
             <button onClick={resumeDelete}>Delete</button>
         </form>
     );

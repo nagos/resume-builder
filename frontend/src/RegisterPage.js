@@ -11,10 +11,9 @@ const RegisterPage = () => {
 
         const form = e.target;
         const formData = new FormData(form);
-
         const formJson = Object.fromEntries(formData.entries());
 
-        const login = backend.userRegister(formJson.user, formJson.password).then((login) => {
+        backend.userRegister(formJson.user, formJson.password).then((login) => {
             if (login) {
                 navigate("/list");
             }

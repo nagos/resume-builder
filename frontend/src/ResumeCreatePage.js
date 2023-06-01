@@ -12,7 +12,6 @@ const ResumeEditPage = () => {
 
         const form = e.target;
         const formData = new FormData(form);
-
         const formJson = Object.fromEntries(formData.entries());
         backend.resumeCreate(formJson.text).then(() => {
             navigate("/list");

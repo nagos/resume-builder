@@ -21,19 +21,19 @@ export default class Backend {
     }
 
     async userStatus() {
-        return this.request('/api/user/status').then((data) => data.login===true);
+        return this.request('/api/user/status').then((data) => data.login);
     }
 
     async userLogin(user, password) {
-        return this.request('/api/user/login', 'POST',  { user, password }).then((data) => data.login===true);
+        return this.request('/api/user/login', 'POST',  { user, password }).then((data) => data.login);
     }
 
     async userRegister(user, password) {
-        return this.request('/api/user/register', 'POST',  { user, password }).then((data) => data.login===true);
+        return this.request('/api/user/register', 'POST',  { user, password }).then((data) => data.login);
     }
 
     async userLogout() {
-        return this.request('/api/user/logout', 'POST', {});
+        return this.request('/api/user/logout', 'POST');
     }
 
     async resumeList() {

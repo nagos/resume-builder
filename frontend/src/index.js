@@ -7,7 +7,6 @@ import ResumeListPage from './ResumeListPage';
 import ResumeEditPage from './ResumeEditPage';
 import ResumeCreatePage from './ResumeCreatePage';
 import ResumeViewPage from './ResumeViewPage';
-import IndexPage from './IndexPage';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -47,6 +46,6 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <RouterProvider router={router}/>
   </React.StrictMode>
 );

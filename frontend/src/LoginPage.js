@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Backend from './backend';
 import { Link } from "react-router-dom";
@@ -11,10 +11,9 @@ const LoginPage = () => {
 
         const form = e.target;
         const formData = new FormData(form);
-
         const formJson = Object.fromEntries(formData.entries());
 
-        const login = backend.userLogin(formJson.user, formJson.password).then((login) => {
+        backend.userLogin(formJson.user, formJson.password).then((login) => {
             if (login) {
                 navigate("/list");
             }
