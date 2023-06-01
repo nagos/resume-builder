@@ -42,4 +42,8 @@ export default class Backend {
     async resumeUpdate(id, text) {
         return this.request(`/api/resume/${id}/update`, 'POST', {text});
     }
+
+    async resumeCreate(text) {
+        return this.request(`/api/resume/create`, 'POST', {text});
+    }
 }

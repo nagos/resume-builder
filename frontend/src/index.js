@@ -5,6 +5,7 @@ import RegisterPage from './RegisterPage';
 import LoginPage from './LoginPage';
 import ResumeListPage from './ResumeListPage';
 import ResumeEditPage from './ResumeEditPage';
+import ResumeCreatePage from './ResumeCreatePage';
 import IndexPage from './IndexPage';
 import {
   createBrowserRouter,
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: "/edit/:id",
     element: <ResumeEditPage/>,
+  },
+  {
+    path: "/create",
+    element: <ResumeCreatePage/>,
   },
 ]);
 

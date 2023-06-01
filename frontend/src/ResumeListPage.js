@@ -2,6 +2,7 @@ import { React, useState, useEffect } from "react";
 import Backend from './backend';
 import ResumeListItem from "./ResumeListItem";
 import Logout from "./Logout";
+import { Link } from "react-router-dom";
 
 const ResumeListPage = () => {
     const backend = new Backend();
@@ -14,6 +15,7 @@ const ResumeListPage = () => {
     return (
         <div>
             <p>List page</p>
+            <Link to='/create'>Create</Link>
             <ul>
                 {list.map((r)=>(<li key={r}><ResumeListItem id={r}/></li>))}
             </ul>
