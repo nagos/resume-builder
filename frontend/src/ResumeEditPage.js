@@ -1,11 +1,13 @@
 import { React, useState, useEffect } from "react";
 import Backend from './backend';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const ResumeEditPage = () => {
     const backend = new Backend();
     let { id } = useParams();
     const [text, setText] = useState("");
+    const navigate = useNavigate();
 
     function resumeUpdate(e) {
         e.preventDefault();
@@ -16,6 +18,13 @@ const ResumeEditPage = () => {
         const formJson = Object.fromEntries(formData.entries());
 
         const login = backend.resumeUpdate(id, formJson.text);
+    }
+
+    function resumeDelete(e) {
+        e.preventDefault();
+        backend.resumeDelete(id).then(() => {
+            navigate("/list");
+        });
     }
     
     function textChange(e) {
@@ -34,6 +43,7 @@ const ResumeEditPage = () => {
             <textarea name='text' value={text} onChange={textChange}/>
             <br/>
             <button type="submit" >Update</button>
+            <button onClick={resumeDelete}>Delete</button>
         </form>
     );
 };
