@@ -15,6 +15,11 @@ export default class Backend {
         return response.json();
     }
 
+    async requestHtml(url) {
+        const response = await fetch(url);
+        return response.text();
+    }
+
     async userStatus() {
         return this.request('/api/user/status').then((data) => data.login===true);
     }
@@ -37,6 +42,10 @@ export default class Backend {
 
     async resumeGet(id) {
         return this.request(`/api/resume/${id}/text`);
+    }
+
+    async resumeGetView(id) {
+        return this.requestHtml(`/api/resume/${id}/html`);
     }
 
     async resumeUpdate(id, text) {
