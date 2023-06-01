@@ -11,11 +11,12 @@ const ResumeListPage = () => {
         })
     }, []);
     return (
-        <p>List page
+        <div>
+            <p>List page</p>
             <ul>
-                {list.map((r)=>(<li><ResumeListItem id={r}/></li>))}
+                {list.map((r)=>(<li key={r}><ResumeListItem id={r}/></li>))}
             </ul>
-        </p>
+        </div>
     );
 };
 
