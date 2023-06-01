@@ -10,6 +10,7 @@ CREATE TABLE users (
 CREATE TABLE resume (
     id int NOT NULL AUTO_INCREMENT, 
     user_id int NOT NULL, 
+    title varchar(255) NOT NULL, 
     text TEXT,
     PRIMARY KEY(id), 
     FOREIGN KEY (user_id) REFERENCES users (id)

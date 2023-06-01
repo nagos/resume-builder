@@ -64,25 +64,25 @@ class Backend():
             return None
     
     def resume_list(self, user_id):
-        resume_get_query = "SELECT id FROM resume WHERE user_id=%s"
+        resume_get_query = "SELECT id, title FROM resume WHERE user_id=%s"
         row, rowid, rowcount = self.db_query(resume_get_query, (user_id,))
-        return [id for (id,) in row]
+        return [{'id': id, 'title': title} for (id, title) in row]
 
     def resume_get(self, id):
-        resume_get_query = "SELECT text FROM resume WHERE id=%s"
+        resume_get_query = "SELECT title, text FROM resume WHERE id=%s"
         row, rowid, rowcount = self.db_query(resume_get_query, (id,))
         if row:
-            return row[0][0]
+            return row[0][0:2]
         else:
             return None
     
-    def resume_create(self, user_id, text):
-        resume_get_query = "INSERT INTO resume (user_id, text) VALUES (%s, %s)"
-        row, rowid, rowcount = self.db_query(resume_get_query, (user_id, text))
+    def resume_create(self, user_id, title, text):
+        resume_get_query = "INSERT INTO resume (user_id, title, text) VALUES (%s, %s, %s)"
+        row, rowid, rowcount = self.db_query(resume_get_query, (user_id, title, text))
 
-    def resume_update(self, user_id, id, text):
-        resume_update_query = "UPDATE resume SET text=%s WHERE id=%s and user_id=%s"
-        row, rowid, rowcount = self.db_query(resume_update_query, (text, id, user_id))
+    def resume_update(self, user_id, id, title, text):
+        resume_update_query = "UPDATE resume SET title=%s, text=%s WHERE id=%s and user_id=%s"
+        row, rowid, rowcount = self.db_query(resume_update_query, (title, text, id, user_id))
         if rowcount == 1:
             return True
         else:

@@ -48,12 +48,12 @@ export default class Backend {
         return this.requestHtml(`/api/resume/${id}/html`);
     }
 
-    async resumeUpdate(id, text) {
-        return this.request(`/api/resume/${id}/update`, 'POST', {text});
+    async resumeUpdate(id, title, text) {
+        return this.request(`/api/resume/${id}/update`, 'POST', {title, text});
     }
 
-    async resumeCreate(text) {
-        return this.request(`/api/resume/create`, 'POST', {text});
+    async resumeCreate(title, text) {
+        return this.request(`/api/resume/create`, 'POST', {title, text});
     }
 
     async resumeDelete(id) {

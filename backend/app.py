@@ -63,7 +63,7 @@ def user_logout():
 @app.route('/api/resume/<int:id>/<string:fmt>')
 def resume_get(id, fmt):
     try:
-        text = backend.resume_get(id)
+        title, text = backend.resume_get(id)
     except BackendError as err:
         app.logger.error(f'Backend error: {err}')
         return {'status': 'error'}, 400
@@ -73,7 +73,7 @@ def resume_get(id, fmt):
     if fmt == 'html':
         return markdown.markdown(text)
     else:
-        return {'text': text}
+        return {'text': text, 'title': title}
 
 @app.route('/api/resume/')
 def resume_list():
@@ -91,10 +91,11 @@ def resume_list():
 def resume_create():
     if not session.is_login():
         return {'status': 'error'}, 400
+    title = request.json.get('title')
     text = request.json.get('text')
     user_id = session.user_id()
     try:
-        backend.resume_create(user_id, text)
+        backend.resume_create(user_id, title, text)
     except BackendError as err:
         app.logger.error(f'Backend error: {err}')
         return {'status': 'error'}, 400
@@ -104,11 +105,12 @@ def resume_create():
 def resume_update(id):
     if not session.is_login():
         return {'status': 'error'}, 400
+    title = request.json.get('title')
     text = request.json.get('text')
     user_id = session.user_id()
     
     try:
-        ret = backend.resume_update(user_id, id, text)
+        ret = backend.resume_update(user_id, id, title, text)
     except BackendError as err:
         app.logger.error(f'Backend error: {err}')
         return {'status': 'error'}, 400

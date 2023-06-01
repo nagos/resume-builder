@@ -17,7 +17,7 @@ const ResumeListPage = () => {
             <p>List page</p>
             <Link to='/create'>Create</Link>
             <ul>
-                {list.map((r)=>(<li key={r}><ResumeListItem id={r}/></li>))}
+                {list.map((r)=>(<li key={r.id}><ResumeListItem data={r}/></li>))}
             </ul>
             <Logout/>
         </div>

@@ -20,11 +20,12 @@ class TestBackendSql(unittest.TestCase):
         self.assertEqual(self.userid, userid2)
     
     def test_resume(self):
+        resume_title = "Title"
         resume_text = "Full Text"
-        self.backend.resume_create(self.userid, resume_text)
+        self.backend.resume_create(self.userid, resume_title, resume_text)
 
         resumes = self.backend.resume_list(self.userid)
         self.assertEqual(len(resumes), 1)
 
-        db_text = self.backend.resume_get(resumes[0])
-        self.assertEqual(db_text, resume_text)
+        db_text = self.backend.resume_get(resumes[0]['id'])
+        self.assertEqual(db_text, (resume_title, resume_text))

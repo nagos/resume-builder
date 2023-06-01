@@ -13,7 +13,7 @@ const ResumeEditPage = () => {
         const form = e.target;
         const formData = new FormData(form);
         const formJson = Object.fromEntries(formData.entries());
-        backend.resumeCreate(formJson.text).then(() => {
+        backend.resumeCreate(formJson.title, formJson.text).then(() => {
             navigate("/list");
         });
     }
@@ -26,6 +26,8 @@ const ResumeEditPage = () => {
         <div>
             <p>Create resume</p>
             <form onSubmit={resumeCreate}>
+                <input type="text" name="title"></input>
+                <br/>
                 <textarea name='text' value={text} onChange={textChange}/>
                 <br/>
                 <button type="submit" >Update</button>
