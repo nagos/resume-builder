@@ -15,7 +15,8 @@ const LoginPage = () => {
 
         const login = backend.userLogin(formJson.user, formJson.password);
         if (login) {
-            navigate("/list");
+            // Переход с задержкой, что бы применились cookies
+            setTimeout(()=>navigate("/list"), 1000);
         }
     }
 
