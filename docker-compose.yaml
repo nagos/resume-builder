@@ -1,0 +1,33 @@
+services:
+  resume-backend:
+    build:
+      context: backend
+    ports:
+      - 9090:9090
+    environment:
+      - DB_SERVER=resume-db
+      - API_KEY=xxxxxxxxxxxxxxxxxxxxx
+    depends_on:
+      - resume-db
+  
+  resume-frontend:
+    build:
+      context: frontend
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 80:80
+    depends_on:
+      - resume-backend
+  
+  resume-db:
+    image: mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    volumes:
+      - ./backend/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:
+    external: false
