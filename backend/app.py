@@ -55,7 +55,7 @@ def user_login():
         app.logger.error(f'Backend error: {err}')
         return {'login': False}, 400
 
-    if not user_id is None:
+    if user_id is not None:
         user_object = backend.get_user(user_id)
         login_user(user_object, remember=True)
         return {'login': True}
