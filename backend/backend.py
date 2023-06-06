@@ -1,5 +1,6 @@
 from mysql.connector import connect, Error
 from passlib.hash import sha256_crypt
+from user import User
 
 class BackendError(Exception):
     pass
@@ -18,6 +19,9 @@ class Backend():
             )
         cursor = cnx.cursor()
         return cnx, cursor
+
+    def get_user(self, user_id):
+        return User(user_id)
     
     def hash_password(self, password):
         return sha256_crypt.hash(password)

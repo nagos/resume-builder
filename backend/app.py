@@ -3,16 +3,21 @@ import flask
 import os
 from mysql.connector import connect
 import markdown
+from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 
 from backend import Backend, BackendError
-from sessionManager import sessionManager
 
 app = Flask(__name__)
 app.secret_key = os.getenv('API_KEY', 'dev key')
 db_server = os.getenv('DB_SERVER')
 
 backend = Backend(db_server, "resume")
-session = sessionManager(flask.session)
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return backend.get_user(user_id)
 
 @app.route('/api/user/register', methods=['POST'])
 def user_register():
@@ -26,13 +31,14 @@ def user_register():
         app.logger.error(err)
         return {'login': False}, 400
 
-    session.login(user_id)
+    user_object = backend.get_user(user_id)
+    login_user(user_object, remember=True)
 
     return {'login': True}
 
 @app.route('/api/user/status')
 def user_status():
-    if session.is_login():
+    if current_user.is_authenticated:
         return {'login': True}
     else:
         return {'login': False}
@@ -50,14 +56,15 @@ def user_login():
         return {'login': False}, 400
 
     if not user_id is None:
-        session.login(user_id)
+        user_object = backend.get_user(user_id)
+        login_user(user_object, remember=True)
         return {'login': True}
     else:
         return {'login': False}, 400
 
 @app.route('/api/user/logout', methods=['POST'])
 def user_logout():
-    session.logout()
+    logout_user()
     return {'login': False}
 
 @app.route('/api/resume/<int:id>/<string:fmt>')
@@ -76,10 +83,9 @@ def resume_get(id, fmt):
         return {'text': text, 'title': title}
 
 @app.route('/api/resume/')
+@login_required
 def resume_list():
-    if not session.is_login():
-        return {'status': 'error'}, 400
-    user_id = session.user_id()
+    user_id = current_user.get_id_int()
     try:
         ids = backend.resume_list(user_id)
     except BackendError as err:
@@ -88,12 +94,11 @@ def resume_list():
     return ids
 
 @app.route('/api/resume/create', methods=['POST'])
+@login_required
 def resume_create():
-    if not session.is_login():
-        return {'status': 'error'}, 400
     title = request.json.get('title')
     text = request.json.get('text')
-    user_id = session.user_id()
+    user_id = current_user.get_id_int()
     try:
         backend.resume_create(user_id, title, text)
     except BackendError as err:
@@ -102,12 +107,11 @@ def resume_create():
     return {'status': 'ok'}
 
 @app.route('/api/resume/<int:id>/update', methods=['POST'])
+@login_required
 def resume_update(id):
-    if not session.is_login():
-        return {'status': 'error'}, 400
     title = request.json.get('title')
     text = request.json.get('text')
-    user_id = session.user_id()
+    user_id = current_user.get_id_int()
     
     try:
         ret = backend.resume_update(user_id, id, title, text)
@@ -121,10 +125,9 @@ def resume_update(id):
         return {'status': 'error'}, 400
 
 @app.route('/api/resume/<int:id>/delete', methods=['POST'])
+@login_required
 def resume_delete(id):
-    if not session.is_login():
-        return {'status': 'error'}, 400
-    user_id = session.user_id()
+    user_id = current_user.get_id_int()
     try:
         ret = backend.resume_delete(user_id, id)
     except BackendError as err:
@@ -135,3 +138,7 @@ def resume_delete(id):
         return {'status': 'ok'}
     else:
         return {'status': 'error'}, 400
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    return {'login': False}, 401
