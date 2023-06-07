@@ -9,7 +9,7 @@ from backend import Backend
 app = Flask(__name__)
 app.secret_key = os.getenv('API_KEY', 'dev key')
 api = Api(app)
-db_server = os.getenv('DB_SERVER')
+db_server = os.getenv('DB_SERVER', "localhost")
 
 backend = Backend(db_server, "resume")
 login_manager = LoginManager()
