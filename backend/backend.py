@@ -6,9 +6,14 @@ class BackendError(Exception):
     pass
 
 class Backend():
+    instance = None
+    def get():
+        return Backend.instance
+
     def __init__(self, db_server, db_name):
         self.db_server = db_server
         self.db_name = db_name
+        Backend.instance = self
     
     def get_db(self):
         cnx = connect(

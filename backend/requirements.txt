@@ -4,3 +4,4 @@ markdown
 passlib
 uWSGI
 flask-login
+flask-restful
