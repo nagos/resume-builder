@@ -21,19 +21,19 @@ export default class Backend {
     }
 
     async userStatus() {
-        return this.request('/api/user/status').then((data) => data.login);
+        return this.request('/api/user').then((data) => data.login);
     }
 
     async userLogin(user, password) {
-        return this.request('/api/user/login', 'POST',  { user, password }).then((data) => data.login);
+        return this.request('/api/user', 'POST',  { user, password }).then((data) => data.login);
     }
 
     async userRegister(user, password) {
-        return this.request('/api/user/register', 'POST',  { user, password }).then((data) => data.login);
+        return this.request('/api/user', 'PUT',  { user, password }).then((data) => data.login);
     }
 
     async userLogout() {
-        return this.request('/api/user/logout', 'POST');
+        return this.request('/api/user', 'DELETE');
     }
 
     async resumeList() {
@@ -49,14 +49,14 @@ export default class Backend {
     }
 
     async resumeUpdate(id, title, text) {
-        return this.request(`/api/resume/${id}/update`, 'POST', {title, text});
+        return this.request(`/api/resume/${id}`, 'PUT', {title, text});
     }
 
     async resumeCreate(title, text) {
-        return this.request(`/api/resume/create`, 'POST', {title, text});
+        return this.request(`/api/resume/`, 'POST', {title, text});
     }
 
     async resumeDelete(id) {
-        return this.request(`/api/resume/${id}/delete`, 'POST');
+        return this.request(`/api/resume/${id}`, 'DELETE');
     }
 }
