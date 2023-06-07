@@ -1,7 +1,8 @@
 flask
-mysql-connector-python
 markdown
 passlib
 uWSGI
 flask-login
 flask-restful
+SQLAlchemy
+pymysql
