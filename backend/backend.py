@@ -60,7 +60,7 @@ class Backend():
         if row:
             user_id, password_hash = row[0]
         else:
-            user_id, password_hash = None, None
+            return None
         
         if self.check_password(password, password_hash):
             return user_id
@@ -78,7 +78,7 @@ class Backend():
         if row:
             return row[0][0:2]
         else:
-            return None
+            return None, None
     
     def resume_create(self, user_id, title, text):
         resume_get_query = "INSERT INTO resume (user_id, title, text) VALUES (%s, %s, %s)"
