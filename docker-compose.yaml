@@ -1,5 +1,6 @@
 services:
   resume-backend:
+    container_name: resume-backend
     build:
       context: backend
     ports:
@@ -24,8 +25,8 @@ services:
     image: mysql
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_DATABASE=resume
     volumes:
-      - ./backend/init_db.sql:/docker-entrypoint-initdb.d/init.sql
       - dbdata:/var/lib/mysql
 
 volumes:

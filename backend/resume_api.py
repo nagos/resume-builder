@@ -7,7 +7,7 @@ from backend import Backend, BackendError
 
 class ResumeListApi(Resource):
     def __init__(self):
-        self.backend = Backend.get()
+        self.backend = Backend()
 
     @login_required
     def get(self):
@@ -35,7 +35,7 @@ class ResumeListApi(Resource):
 
 class ResumeApi(Resource):
     def __init__(self):
-        self.backend = Backend.get()
+        self.backend = Backend()
 
     def get(self, id, fmt=None):
         """Read resume"""

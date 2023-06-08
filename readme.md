@@ -9,7 +9,11 @@
 - Текст рендерится markdown
 
 # Запуск
-```docker-compose up -d```
+```
+docker-compose up -d --build
+# Создать таблиц в базе данных
+docker exec -it resume-backend python app.py
+```
 
 Открыть http://localhost
 
@@ -30,6 +34,11 @@ flask run --debug
 cd frontend
 npm install
 npm start
+```
+
+# Тесты
+```
+DB_SERVER=127.0.0.1 python3 -m unittest
 ```
 
 # Скриншоты

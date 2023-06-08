@@ -14,15 +14,14 @@ api = Api(app)
 db_server = os.getenv('DB_SERVER', "localhost")
 db_name = "resume"
 app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://root:@{db_server}/{db_name}"
+if app.debug:
+    app.config["SQLALCHEMY_ECHO"] = True
 
 db.init_app(app)
 
 backend = Backend()
 login_manager = LoginManager()
 login_manager.init_app(app)
-
-with app.app_context():
-    db.create_all()
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -35,3 +34,8 @@ def unauthorized():
 api.add_resource(ResumeListApi, '/api/resume/')
 api.add_resource(ResumeApi, '/api/resume/<int:id>/<string:fmt>', '/api/resume/<int:id>')
 api.add_resource(UserApi, '/api/user')
+
+if __name__ == '__main__':
+    print("Creating database tables")
+    with app.app_context():
+        db.create_all()

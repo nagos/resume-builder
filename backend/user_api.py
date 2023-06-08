@@ -6,7 +6,7 @@ from backend import Backend, BackendError
 
 class UserApi(Resource):
     def __init__(self):
-        self.backend = Backend.get()
+        self.backend = Backend()
 
     def get(self):
         """Login status"""

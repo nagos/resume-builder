@@ -9,16 +9,9 @@ class BackendError(Exception):
     pass
 
 class Backend():
-    instance = None
-    def get():
-        return Backend.instance
-
-    def __init__(self):
-        Backend.instance = self
-    
     def get_user(self, user_id):
         return UserSession(user_id)
-    
+
     def hash_password(self, password):
         return sha256_crypt.hash(password)
 
@@ -36,6 +29,14 @@ class Backend():
 
         return user.id
     
+    # Для тестов
+    def user_delete(self, user):
+        try:
+            db.session.execute(db.delete(User).where(User.login==user))
+            db.session.commit()
+        except DatabaseError as err:
+            raise BackendError(f'Database error: {err}')
+
     def user_login(self, user, password):
         try:
             user = db.session.execute(db.select(User).where(User.login==user)).scalar()
@@ -49,24 +50,30 @@ class Backend():
             return user.id
         else:
             return None
-    
+
     def resume_list(self, user_id):
         try:
-            resumes = db.session.execute(db.select(Resume).where(Resume.user_id==user_id)).scalars()
+            resumes = db.session.execute(
+                db.select(Resume)
+                .where(Resume.user_id==user_id)
+            ).scalars()
         except DatabaseError as err:
             raise BackendError(f'Database error: {err}')
         return [{'id': resume.id, 'title': resume.title} for resume in resumes]
 
     def resume_get(self, id):
         try:
-            resume = db.session.execute(db.select(Resume).where(Resume.id==id)).scalar()
+            resume = db.session.execute(
+                db.select(Resume)
+                .where(Resume.id==id)
+            ).scalar()
         except DatabaseError as err:
             raise BackendError(f'Database error: {err}')
         if resume:
             return resume.title, resume.text
         else:
             return None, None
-    
+
     def resume_create(self, user_id, title, text):
         resume = Resume(user_id=user_id, title=title, text=text)
         try:
@@ -77,9 +84,11 @@ class Backend():
 
     def resume_update(self, user_id, id, title, text):
         try:
-            result = db.session.execute(db.update(Resume)
-                .where(Resume.id==id).where(Resume.user_id==user_id)
-                .values({"title":title, "text": text })
+            result = db.session.execute(
+                db.update(Resume)
+                .where(Resume.id==id)
+                .where(Resume.user_id==user_id)
+                .values({"title":title, "text": text})
             )
             db.session.commit()
         except DatabaseError as err:
@@ -89,11 +98,13 @@ class Backend():
             return True
         else:
             return False
-    
+
     def resume_delete(self, user_id, id):
         try:
-            result = db.session.execute(db.delete(Resume)
-                .where(Resume.id==id).where(Resume.user_id==user_id)
+            result = db.session.execute(
+                db.delete(Resume)
+                .where(Resume.id==id)
+                .where(Resume.user_id==user_id)
             )
             db.session.commit()
         except DatabaseError as err:
