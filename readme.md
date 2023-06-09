@@ -12,7 +12,7 @@
 ```
 docker-compose up -d --build
 # Создать таблиц в базе данных
-docker exec -it resume-backend python app.py
+docker exec -it resume-backend flask db upgrade
 ```
 
 Открыть http://localhost
@@ -20,8 +20,8 @@ docker exec -it resume-backend python app.py
 # Запуск отладочной версии
 ```
 cd backend
-docker run -d --rm -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_DATABASE=resume -p 3306:3306 mysql
-python3 app.py
+docker run -d --rm -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_DATABASE=resume -p 3306:3306 --name mysql mysql
+flask db upgrade
 ```
 
 ```

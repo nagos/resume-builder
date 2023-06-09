@@ -2,6 +2,7 @@ from flask import Flask
 import os
 from flask_login import LoginManager
 from flask_restful import Api
+from flask_migrate import Migrate
 
 from resume_api import ResumeListApi, ResumeApi
 from user_api import UserApi
@@ -18,6 +19,7 @@ if app.debug:
     app.config["SQLALCHEMY_ECHO"] = True
 
 db.init_app(app)
+migrate = Migrate(app, db)
 
 backend = Backend()
 login_manager = LoginManager()

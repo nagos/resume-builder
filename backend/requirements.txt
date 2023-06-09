@@ -6,3 +6,4 @@ flask-login
 flask-restful
 pymysql
 Flask-SQLAlchemy
+Flask-Migrate
