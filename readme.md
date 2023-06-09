@@ -20,8 +20,8 @@ docker exec -it resume-backend python app.py
 # Запуск отладочной версии
 ```
 cd backend
-docker run -d --rm -e MYSQL_ALLOW_EMPTY_PASSWORD=true -p 3306:3306 mysql
-mysql -h 127.0.0.1 -u root < init_db.sql
+docker run -d --rm -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_DATABASE=resume -p 3306:3306 mysql
+python3 app.py
 ```
 
 ```
