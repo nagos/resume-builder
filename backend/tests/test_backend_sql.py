@@ -21,7 +21,7 @@ class TestBackendSql(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         with cls.app.app_context():
-            cls.backend.user_delete("user1")
+            cls.backend.user_delete(cls.userid)
 
     def test_login(self):
         with self.app.app_context():
@@ -55,7 +55,6 @@ class TestBackendSql(unittest.TestCase):
             resumes = self.backend.resume_list(self.userid)
             with self.assertRaises(BackendError):
                 self.backend.resume_delete(9999, resumes[0]['id'])
-            self.backend.resume_delete(self.userid, resumes[0]['id'])
 
     def test_non_existing_update(self):
         with self.app.app_context():

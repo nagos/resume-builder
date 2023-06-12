@@ -33,9 +33,10 @@ class Backend():
         return user.id
     
     # Для тестов
-    def user_delete(self, user):
+    def user_delete(self, user_id):
         try:
-            db.session.execute(db.delete(User).where(User.login==user))
+            db.session.execute(db.delete(Resume).where(Resume.user_id==user_id))
+            db.session.execute(db.delete(User).where(User.id==user_id))
             db.session.commit()
         except DatabaseError as err:
             raise BackendError(f'Database error: {err}')
