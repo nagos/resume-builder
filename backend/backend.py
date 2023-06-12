@@ -8,6 +8,9 @@ from db_models import db, User, Resume;
 class BackendError(Exception):
     pass
 
+class NotFoundError(BackendError):
+    pass
+
 class Backend():
     def get_user(self, user_id):
         return UserSession(user_id)
@@ -72,7 +75,7 @@ class Backend():
         if resume:
             return resume.title, resume.text
         else:
-            return None, None
+            raise NotFoundError("Resume not found")
 
     def resume_create(self, user_id, title, text):
         resume = Resume(user_id=user_id, title=title, text=text)
@@ -94,10 +97,8 @@ class Backend():
         except DatabaseError as err:
             raise BackendError(f'Database error: {err}')
 
-        if result.rowcount == 1:
-            return True
-        else:
-            return False
+        if result.rowcount != 1:
+            raise NotFoundError("Resume not found")
 
     def resume_delete(self, user_id, id):
         try:
@@ -110,7 +111,5 @@ class Backend():
         except DatabaseError as err:
             raise BackendError(f'Database error: {err}')
         
-        if result.rowcount == 1:
-            return True
-        else:
-            return False
+        if result.rowcount != 1:
+            raise NotFoundError("Resume not found")

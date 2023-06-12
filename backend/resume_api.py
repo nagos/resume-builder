@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 from flask import request, Response, current_app as app
 import markdown
 
-from backend import Backend, BackendError
+from backend import Backend, BackendError, NotFoundError
 
 class ResumeListApi(Resource):
     def __init__(self):
@@ -41,12 +41,13 @@ class ResumeApi(Resource):
         """Read resume"""
         try:
             title, text = self.backend.resume_get(id)
+        except NotFoundError as err:
+            app.logger.error(f'Backend error: {err}')
+            return {'status': 'error'}, 404
         except BackendError as err:
             app.logger.error(f'Backend error: {err}')
             return {'status': 'error'}, 400
 
-        if text is None:
-            return {'status': 'error'}, 400
         if fmt == 'html':
             return Response(markdown.markdown(text), mimetype='text/hmll')
         else:
@@ -60,27 +61,27 @@ class ResumeApi(Resource):
         user_id = current_user.get_id_int()
         
         try:
-            ret = self.backend.resume_update(user_id, id, title, text)
+            self.backend.resume_update(user_id, id, title, text)
+        except NotFoundError as err:
+            app.logger.error(f'Backend error: {err}')
+            return {'status': 'error'}, 404
         except BackendError as err:
             app.logger.error(f'Backend error: {err}')
             return {'status': 'error'}, 400
 
-        if ret:
-            return {'status': 'ok'}
-        else:
-            return {'status': 'error'}, 400
+        return {'status': 'ok'}
         
     @login_required
     def delete(self, id, fmt=None):
         """Delete resume"""
         user_id = current_user.get_id_int()
         try:
-            ret = self.backend.resume_delete(user_id, id)
+            self.backend.resume_delete(user_id, id)
+        except NotFoundError as err:
+            app.logger.error(f'Backend error: {err}')
+            return {'status': 'error'}, 404
         except BackendError as err:
             app.logger.error(f'Backend error: {err}')
             return {'status': 'error'}, 400
 
-        if ret:
-            return {'status': 'ok'}
-        else:
-            return {'status': 'error'}, 400
+        return {'status': 'ok'}
