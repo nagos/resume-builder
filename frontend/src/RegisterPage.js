@@ -2,7 +2,6 @@ import { React } from "react";
 import { useNavigate } from "react-router-dom";
 import Backend from './backend';
 import Box from '@mui/material/Box';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
@@ -10,7 +9,6 @@ import LockPersonOutlinedIcon from '@mui/icons-material/LockPersonOutlined';
 import TextField from '@mui/material/TextField';
 import Layout from "./Layout";
 
-const defaultTheme = createTheme();
 const RegisterPage = () => {
     const backend = new Backend();
     const navigate = useNavigate();

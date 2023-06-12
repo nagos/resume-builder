@@ -43,11 +43,12 @@ const ResumeEditPage = () => {
     }
 
     useEffect(() => {
+        const backend = new Backend();
         backend.resumeGet(id).then((data) => {
             setText(data.text);
             setTitle(data.title);
         })
-    }, []);
+    });
     
 
     return (

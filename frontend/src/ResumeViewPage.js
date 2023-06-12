@@ -5,15 +5,15 @@ import parse from 'html-react-parser';
 import Layout from "./Layout";
 
 const ResumeViewPage = () => {
-    const backend = new Backend();
     let { id } = useParams();
     const [text, setText] = useState("");
 
     useEffect(() => {
+        const backend = new Backend();
         backend.resumeGetView(id).then((data) => {
             setText(data);
         })
-    }, []);
+    });
 
     return (
         <Layout>

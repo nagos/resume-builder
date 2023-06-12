@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import Backend from './backend';
 import { useNavigate } from "react-router-dom";
 import Typography from '@mui/material/Typography';

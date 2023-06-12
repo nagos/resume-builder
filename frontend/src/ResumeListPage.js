@@ -1,7 +1,6 @@
 import { React, useState, useEffect } from "react";
 import Backend from './backend';
 import { Link as RouterLink } from "react-router-dom";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -13,16 +12,14 @@ import PublicIcon from '@mui/icons-material/Public';
 import Button from '@mui/material/Button';
 import Layout from "./Layout";
 
-const defaultTheme = createTheme();
-
 const ResumeListPage = () => {
-    const backend = new Backend();
     const [list, setList] = useState([]);
     useEffect(() => {
+        const backend = new Backend();
         backend.resumeList().then((data) => {
             setList(data);
         })
-    }, []);
+    });
     return (
         <Layout logout='true'>
             <Typography component="h2" variant="h6" color="primary" gutterBottom>

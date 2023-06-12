@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Backend from './backend';
 import { Link as RouterLink } from "react-router-dom";
 import Box from '@mui/material/Box';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
@@ -11,14 +10,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import TextField from '@mui/material/TextField';
 import Layout from "./Layout";
 
-const defaultTheme = createTheme();
 
 const LoginPage = () => {
-    const backend = new Backend();
 
     function loginSend(e) {
         e.preventDefault();
 
+        const backend = new Backend();
         const form = e.target;
         const formData = new FormData(form);
         const formJson = Object.fromEntries(formData.entries());
@@ -32,12 +30,13 @@ const LoginPage = () => {
 
     const navigate = useNavigate();
     useEffect(() => {
+        const backend = new Backend();
         backend.userStatus().then((login) => {
             if (login) {
                 navigate("/list");
             }
         })
-    }, []);
+    });
     return (
         <Layout>
             <Box
